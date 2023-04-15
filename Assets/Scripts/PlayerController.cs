@@ -5,18 +5,22 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float jumpForce = 100;
+    public float jumpVel = 10;
     public LayerMask groundMask;
     public SpriteRenderer sr;
     public BoxCollider2D boxCollider;
     public Rigidbody2D rb;
 
     bool grounded;
+    bool doubleJump;
 
     private void Update()
     {
         GroundCheck();
         JumpLogic();
     }
+
+
 
     void JumpLogic()
     {
@@ -25,8 +29,15 @@ public class PlayerController : MonoBehaviour
         {
             if(grounded)
             {
+                doubleJump = true;
                 Vector2 force = new Vector2(0, jumpForce);
                 rb.AddForce( force );
+            }
+            else if( doubleJump )
+            {
+                doubleJump = false;
+                Vector2 vel = new Vector2(0, jumpVel);
+                rb.velocity = vel;
             }
         }
     }
@@ -52,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube( transform.position + Vector3.down * 0.1f, boxCollider.bounds.size );
+       // Gizmos.color = Color.green;
+       // Gizmos.DrawWireCube( transform.position + Vector3.down * 0.1f, boxCollider.bounds.size );
     }
 }
