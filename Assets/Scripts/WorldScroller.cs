@@ -5,10 +5,12 @@ using UnityEngine;
 public class WorldScroller : MonoBehaviour
 {
     public SpriteRenderer activeTile1, activeTile2;
-    public float speed = 0.1f;
+    float speed;
 
     private void FixedUpdate()
     {
+        speed = GameManager.Instance.WorldSpeed;
+
         activeTile1.transform.position += new Vector3( -speed, 0, 0);
         activeTile2.transform.position += new Vector3( -speed, 0, 0);
 
