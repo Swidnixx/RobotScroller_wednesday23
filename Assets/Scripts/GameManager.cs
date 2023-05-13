@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +21,13 @@ public class GameManager : MonoBehaviour
 
     //References
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI coinsText;
+    public GameObject gameOverPanel;
+
+    private void Start()
+    {
+        gameOverPanel.SetActive(false);
+    }
 
     private void FixedUpdate()
     {
@@ -29,5 +38,18 @@ public class GameManager : MonoBehaviour
     public void CollectCoin()
     {
         coins++;
+        coinsText.text = coins.ToString();
+    }
+
+    public void GameOver()
+    {
+        Time.timeScale = 0;
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene( SceneManager.GetActiveScene().name );
+        Time.timeScale = 1;
     }
 }
