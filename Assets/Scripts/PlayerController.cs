@@ -44,18 +44,18 @@ public class PlayerController : MonoBehaviour
 
     void GroundCheck()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundMask);
+        RaycastHit2D hit = Physics2D.BoxCast( boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundMask);
         grounded = hit.collider != null;
 
-        if ( grounded )
-        {
-            //zmieniamy kolor gracza na zielony przy trafieniu
-            sr.color = Color.green;
-        }
-        else
-        {
-            sr.color = Color.red;
-        }
+        //if ( grounded )
+        //{
+        //    //zmieniamy kolor gracza na zielony przy trafieniu
+        //    sr.color = Color.green;
+        //}
+        //else
+        //{
+        //    sr.color = Color.red;
+        //}
 
         //Debug.DrawLine(transform.position, transform.position + Vector3.down * 0.9f);
         //Debug.DrawRay(transform.position, Vector3.down * 0.9f);
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-       // Gizmos.color = Color.green;
-       // Gizmos.DrawWireCube( transform.position + Vector3.down * 0.1f, boxCollider.bounds.size );
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireCube( boxCollider.bounds.center + Vector3.down * 0.1f, boxCollider.bounds.size );
     }
 }
