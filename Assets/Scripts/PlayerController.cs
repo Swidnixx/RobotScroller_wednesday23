@@ -19,7 +19,14 @@ public class PlayerController : MonoBehaviour
         GroundCheck();
         JumpLogic();
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Magnet") )
+        {
+            Destroy(collision.gameObject);
+            GameManager.Instance.CollectMagnet();
+        }
+    }
 
 
     void JumpLogic()

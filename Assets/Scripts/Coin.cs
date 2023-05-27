@@ -5,6 +5,21 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public ParticleSystem particles;
+    public float speed = 1;
+    Transform player;
+
+    private void Start()
+    {
+        player = FindObjectOfType<PlayerController>().transform;
+    }
+
+    private void Update()
+    {
+        if(GameManager.Instance.MagnetActive)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, player.position, Time.deltaTime * speed);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI coinsText;
     public GameObject gameOverPanel;
 
+    //Powerups
+    public bool MagnetActive { get; private set; }
+
     private void Start()
     {
         gameOverPanel.SetActive(false);
@@ -33,6 +36,11 @@ public class GameManager : MonoBehaviour
     {
         score += WorldSpeed;
         scoreText.text = score.ToString("n0");
+    }
+
+    public void CollectMagnet()
+    {
+        MagnetActive = true;
     }
 
     public void CollectCoin()
