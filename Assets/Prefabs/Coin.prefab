@@ -4987,3 +4987,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particles: {fileID: 3640751225735325065}
   speed: 10
+  maxDistance: 10

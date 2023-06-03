@@ -6,6 +6,7 @@ public class WorldScroller : MonoBehaviour
 {
     public SpriteRenderer activeTile1, activeTile2;
     float speed;
+    public SpriteRenderer[] allTiles;
 
     private void FixedUpdate()
     {
@@ -16,12 +17,12 @@ public class WorldScroller : MonoBehaviour
 
         if( activeTile2.transform.position.x < 0 )
         {
-            activeTile1.transform.position = activeTile2.transform.position +
-                new Vector3( activeTile1.bounds.size.x, 0, 0);
-
-            var tmp = activeTile1;
+            Destroy(activeTile1.gameObject);
             activeTile1 = activeTile2;
-            activeTile2 = tmp;
+            var newTile = allTiles[Random.Range(0, allTiles.Length)];
+            activeTile2 = Instantiate(newTile, transform);
+
+            activeTile2.transform.position = activeTile1.transform.position + new Vector3( activeTile1.bounds.size.x * 0.5f, 0, 0) + new Vector3(activeTile2.bounds.size.x * 0.5f, 0, 0);
         }
     }
 

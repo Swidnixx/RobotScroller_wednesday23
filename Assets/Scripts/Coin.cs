@@ -8,6 +8,8 @@ public class Coin : MonoBehaviour
     public float speed = 1;
     Transform player;
 
+    public float maxDistance = 1;
+
     private void Start()
     {
         player = FindObjectOfType<PlayerController>().transform;
@@ -17,7 +19,10 @@ public class Coin : MonoBehaviour
     {
         if(GameManager.Instance.MagnetActive)
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, Time.deltaTime * speed);
+            if (Vector2.Distance(transform.position, player.position) < maxDistance)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, player.position, Time.deltaTime * speed);
+            }
         }
     }
 
