@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,13 +21,27 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI coinsText;
     public GameObject gameOverPanel;
+    public TextMeshProUGUI magnetTimerText;
+    public GameObject powerupsPanelUI;
 
     //Powerups
     public bool MagnetActive { get; private set; }
+    public float magnetDuration = 10;
+    float timerMagnet;
 
     private void Start()
     {
         gameOverPanel.SetActive(false);
+        powerupsPanelUI.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if(MagnetActive)
+        {
+            timerMagnet -= Time.deltaTime;
+            magnetTimerText.text = timerMagnet.ToString("n0");
+        }
     }
 
     private void FixedUpdate()
@@ -35,24 +50,46 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString("n0");
     }
 
+    #region Pickups
+    public bool BatteryActive { get; private set; }
+    public void CollectBattery()
+    {
+        CancelInvoke(nameof(BatteryOff));
+        if (!BatteryActive)
+            WorldSpeed += 0.05f;
+
+        BatteryActive = true;
+        Invoke(nameof(BatteryOff), 10);
+    }
+    void BatteryOff()
+    {
+        WorldSpeed -= 0.05f;
+        BatteryActive = false;
+    }
+
     public void CollectMagnet()
     {
+        powerupsPanelUI.SetActive(true);
+        timerMagnet = magnetDuration;
         CancelInvoke(nameof(MagnetOff));
         MagnetActive = true;
 
-        Invoke(nameof(MagnetOff), 10);
+        Invoke(nameof(MagnetOff), magnetDuration);
     }
     void MagnetOff()
     {
         MagnetActive = false;
+        timerMagnet = 0;
+        powerupsPanelUI.SetActive(false);
     }
-
     public void CollectCoin()
     {
         coins++;
         coinsText.text = coins.ToString();
     }
+    #endregion
 
+    #region GameFlow
     public void GameOver()
     {
         Time.timeScale = 0;
@@ -64,4 +101,5 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene( SceneManager.GetActiveScene().name );
         Time.timeScale = 1;
     }
+    #endregion
 }

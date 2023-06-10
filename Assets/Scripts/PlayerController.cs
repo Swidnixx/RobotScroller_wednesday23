@@ -21,6 +21,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.CompareTag("Battery"))
+        {
+            Destroy(collision.gameObject);
+            GameManager.Instance.CollectBattery();
+        }
+
         if (collision.CompareTag("Magnet") )
         {
             Destroy(collision.gameObject);
