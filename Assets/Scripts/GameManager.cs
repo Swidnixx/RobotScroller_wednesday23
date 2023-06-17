@@ -22,17 +22,22 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI coinsText;
     public GameObject gameOverPanel;
     public TextMeshProUGUI magnetTimerText;
-    public GameObject powerupsPanelUI;
+    public GameObject magnetTimerPanel;
+    public GameObject batteryTimerPanel;
+    public TextMeshProUGUI batteryTimerText;
 
     //Powerups
+    public bool BatteryActive { get; private set; }
     public bool MagnetActive { get; private set; }
     public float magnetDuration = 10;
     float timerMagnet;
+    float timerBattery;
 
     private void Start()
     {
         gameOverPanel.SetActive(false);
-        powerupsPanelUI.SetActive(false);
+        magnetTimerPanel.SetActive(false);
+        batteryTimerPanel.SetActive(false);
     }
 
     private void Update()
@@ -40,7 +45,13 @@ public class GameManager : MonoBehaviour
         if(MagnetActive)
         {
             timerMagnet -= Time.deltaTime;
-            magnetTimerText.text = timerMagnet.ToString("n0");
+            magnetTimerText.text = timerMagnet.ToString("n2");
+        }
+
+        if(BatteryActive)
+        {
+            timerBattery -= Time.deltaTime;
+            batteryTimerText.text = timerBattery.ToString("n2");
         }
     }
 
@@ -51,25 +62,29 @@ public class GameManager : MonoBehaviour
     }
 
     #region Pickups
-    public bool BatteryActive { get; private set; }
+    public float batteryDuration = 10;
     public void CollectBattery()
     {
+        batteryTimerPanel.SetActive(true);
+        timerBattery = batteryDuration;
+
         CancelInvoke(nameof(BatteryOff));
         if (!BatteryActive)
             WorldSpeed += 0.05f;
 
         BatteryActive = true;
-        Invoke(nameof(BatteryOff), 10);
+        Invoke(nameof(BatteryOff), batteryDuration);
     }
     void BatteryOff()
     {
         WorldSpeed -= 0.05f;
         BatteryActive = false;
+        batteryTimerPanel.SetActive(false);
     }
 
     public void CollectMagnet()
     {
-        powerupsPanelUI.SetActive(true);
+        magnetTimerPanel.SetActive(true);
         timerMagnet = magnetDuration;
         CancelInvoke(nameof(MagnetOff));
         MagnetActive = true;
@@ -80,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         MagnetActive = false;
         timerMagnet = 0;
-        powerupsPanelUI.SetActive(false);
+        magnetTimerPanel.SetActive(false);
     }
     public void CollectCoin()
     {
