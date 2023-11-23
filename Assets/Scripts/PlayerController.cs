@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,6 +41,14 @@ public class PlayerController : MonoBehaviour
         bool jumpInput = Input.GetMouseButtonDown(0);
         if(jumpInput)
         {
+            bool hoverUI;
+#if UNITY_EDITOR
+            hoverUI = EventSystem.current.IsPointerOverGameObject();
+#else
+            hoverUI = EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+#endif
+            if (hoverUI) return;
+
             if(grounded)
             {
                 doubleJump = true;
